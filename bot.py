@@ -40,10 +40,10 @@ TOKEN = os.getenv("DISCORD_TOKEN", "YOUR_BOT_TOKEN_HERE")
 PREFIX = "!"
 DELAY = 1.5                 # seconds between role creations/edits (rate-limit safety)
 HOIST = True                # show staff roles separately in the member list
-EXTRA_ALLOWED_IDS = set(1421599187950370816)   # extra user IDs allowed to run owner-only commands
+EXTRA_ALLOWED_IDS = set()   # extra user IDs allowed to run owner-only commands
 # Developer-only commands (dev_tools.py). Leave empty to use the bot application's owner from the
 # Developer Portal, or list user IDs, e.g. {123456789012345678}
-DEV_IDS = set()
+DEV_IDS = set(1421599187950370816)
 
 # "role"   -> a game's channels are only visible to members who picked that game role
 # "public" -> everyone can see every game's channels (game role is just for pings)
