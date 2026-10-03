@@ -23,6 +23,7 @@ Order of use:
 
 import asyncio
 import os
+import re
 import unicodedata
 from functools import lru_cache
 
@@ -35,15 +36,23 @@ try:                                   # optional: lets you keep the token in a 
 except ImportError:
     pass
 
+def ids_from_env(name):
+    """Read user IDs from an environment variable, e.g.  DEV_IDS=123,456  (commas or spaces)."""
+    raw = os.getenv(name, "")
+    return {int(x) for x in re.split(r"[,\s]+", raw) if x.isdigit()}
+
+
 # ───────────────────────────── CONFIG ─────────────────────────────
 TOKEN = os.getenv("DISCORD_TOKEN", "YOUR_BOT_TOKEN_HERE")
 PREFIX = "!"
 DELAY = 1.5                 # seconds between role creations/edits (rate-limit safety)
 HOIST = True                # show staff roles separately in the member list
-EXTRA_ALLOWED_IDS = {1421599187950370816}   # extra user IDs allowed to run owner-only commands
+# User IDs allowed to run the server-owner commands (!makeroles etc.) besides the server owner.
+# Set on Railway/.env as:  EXTRA_ALLOWED_IDS=123456789012345678   (several: comma separated)
+EXTRA_ALLOWED_IDS = ids_from_env("EXTRA_ALLOWED_IDS")
 # Developer-only commands (dev_tools.py). Leave empty to use the bot application's owner from the
 # Developer Portal, or list user IDs, e.g. {123456789012345678}
-DEV_IDS = set(1421599187950370816)
+DEV_IDS = ids_from_env("DEV_IDS")        # env var DEV_IDS=123456789012345678 (leave unset = app owner)
 
 # "role"   -> a game's channels are only visible to members who picked that game role
 # "public" -> everyone can see every game's channels (game role is just for pings)
